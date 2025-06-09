@@ -1,0 +1,68 @@
+<html>
+
+<head>
+  <title>PayPal Smart Buttons PopupBridge Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://js.braintreegateway.com/web/3.120.2/js/paypal-checkout.js"></script>
+</head>
+
+<body>
+  <div>
+    <a href="index.html"><- Back</a>
+  </div>
+
+  <h1>PayPal Smart Buttons PopupBridge Example</h1>
+
+  <div id="paypal-button-container"></div>
+  <pre id="log"></pre>
+
+  <script>
+    var log = document.querySelector('#log');
+
+    braintree.paypalCheckout.create({
+      authorization: 'sandbox_f252zhq7_hh4cpc39zq4rgjcg'
+    }).then(function (paypalCheckoutInstance) {
+      return paypalCheckoutInstance.loadPayPalSDK({
+        vault: true
+      });
+    }).then(function (paypalCheckoutInstance) {
+      return paypal.Buttons({
+        fundingSource: paypal.FUNDING.PAYPAL,
+        appSwitchWhenAvailable: true,
+        createBillingAgreement: function () {
+          return paypalCheckoutInstance.createPayment({
+            flow: 'vault'
+          });
+        },
+
+        onApprove: function (data, actions) {
+          return paypalCheckoutInstance.tokenizePayment(data).then(function (payload) {
+            log.innerText = JSON.stringify(payload, null, 2);
+          });
+        },
+
+        onCancel: function (err) {
+          log.innerText = 'User cancelled';
+        },
+
+        onError: function (err) {
+          log.innerText = err.message;
+        }
+      }).render('#paypal-button-container');
+    }).catch(function (err) {
+      console.error('Error!', err);
+    });
+
+    // If you support app switch, depending on the browser the buyer may end up in a new tab
+// To trigger completion of the flow, execute the code below after re-instantiating buttons
+if (button.hasReturned()) {
+  button.resume();
+} else {
+  button.render("#paypal-button-container");
+}
+  </script>
+</body>
+
+</html>
