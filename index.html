@@ -22,7 +22,7 @@
     var log = document.querySelector('#log');
 
     braintree.paypalCheckout.create({
-      authorization: 'sandbox_f252zhq7_hh4cpc39zq4rgjcg'
+      authorization: 'sandbox_9cn37sjt_wwdyzynjc54qxywk'
     }).then(function (paypalCheckoutInstance) {
       return paypalCheckoutInstance.loadPayPalSDK({
       currency: 'USD',  // Must match the currency passed in with createPayment
