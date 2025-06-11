@@ -25,15 +25,22 @@
       authorization: 'sandbox_f252zhq7_hh4cpc39zq4rgjcg'
     }).then(function (paypalCheckoutInstance) {
       return paypalCheckoutInstance.loadPayPalSDK({
-        vault: true
+      currency: 'USD',  // Must match the currency passed in with createPayment
+      intent: 'capture' // Must match the intent passed in with createPayment
       });
     }).then(function (paypalCheckoutInstance) {
       return paypal.Buttons({
         fundingSource: paypal.FUNDING.PAYPAL,
         appSwitchWhenAvailable: true,
-        createBillingAgreement: function () {
+        createOrder: function () {
           return paypalCheckoutInstance.createPayment({
-            flow: 'vault'
+            flow: 'checkout', // Required
+            amount: 10.00, // Required
+            currency: 'USD', // Required, must match the currency passed in with loadPayPalSDK
+
+            intent: 'capture', // Must match the intent passed in with loadPayPalSDK
+            returnUrl = 'https://example.com/return',
+            cancelUrl = 'https://example.com/cancel'
           });
         },
 
