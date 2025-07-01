@@ -20,37 +20,28 @@
 
   <script>
 
-        window.onload = function () {
+window.onload = function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
+  const payerID = urlParams.get('PayerID');
 
-      const urlParams = new URLSearchParams(window.location.search);
-
-      const token = urlParams.get('token');
-
-      const payerID = urlParams.get('PayerID');
-
-
-
-      if (token && payerID) {
-
-        // Attempt to close the window
-
-        window.close();
-
-
-
-        // If window.close() fails (which it will on Safari), fallback
-
-        setTimeout(() => {
-
-          // Redirect to a final confirmation page or show a message
-
-          window.location.href = '/checkout-complete';
-
-        }, 1500);
-
-      }
-
-    };
+  if (token && payerID) {
+    // Try to close the window
+    const closedByScript = window.close();
+    
+    // Most browsers return undefined for window.close(), so check if the window is still open
+    if (window.closed === false) {
+      // Display a message asking user to close the window
+      document.body.innerHTML = `
+        <div style="text-align: center; padding: 50px;">
+          <h2>Payment Completed Successfully</h2>
+          <p>You can close this window and return to the main application.</p>
+          <button onclick="window.location.href='/checkout-complete'">Continue to Confirmation</button>
+        </div>
+      `;
+    }
+  }
+};
     
     var log = document.querySelector('#log');
 
