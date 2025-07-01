@@ -19,6 +19,39 @@
   <pre id="log"></pre>
 
   <script>
+
+        window.onload = function () {
+
+      const urlParams = new URLSearchParams(window.location.search);
+
+      const token = urlParams.get('token');
+
+      const payerID = urlParams.get('PayerID');
+
+
+
+      if (token && payerID) {
+
+        // Attempt to close the window
+
+        window.close();
+
+
+
+        // If window.close() fails (which it will on Safari), fallback
+
+        setTimeout(() => {
+
+          // Redirect to a final confirmation page or show a message
+
+          window.location.href = '/checkout-complete';
+
+        }, 1500);
+
+      }
+
+    };
+    
     var log = document.querySelector('#log');
 
     braintree.paypalCheckout.create({
