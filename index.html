@@ -21,24 +21,39 @@
   <script>
 
 window.onload = function() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get('token');
-  const payerID = urlParams.get('PayerID');
-
-  if (token && payerID) {
-    // Try to close the window
-    const closedByScript = window.close();
+  // Check if the hash fragment contains "onApprove"
+  if (window.location.hash.includes('onApprove')) {
+    // Parse the hash fragment (remove the "#" and split the parameters)
+    const hashParams = window.location.hash.substring(1);
+    const hashParts = hashParams.split('?');
     
-    // Most browsers return undefined for window.close(), so check if the window is still open
-    if (window.closed === false) {
-      // Display a message asking user to close the window
-      document.body.innerHTML = `
-        <div style="text-align: center; padding: 50px;">
-          <h2>Payment Completed Successfully</h2>
-          <p>You can close this window and return to the main application.</p>
-          <button onclick="window.location.href='/checkout-complete'">Continue to Confirmation</button>
-        </div>
-      `;
+    // If there are parameters after the hash event name
+    if (hashParts.length > 1) {
+      const urlParams = new URLSearchParams(hashParts[1]);
+      const token = urlParams.get('token');
+      const payerID = urlParams.get('PayerID');
+      
+      if (token && payerID) {
+        console.log("Payment approved with token:", token, "and PayerID:", payerID);
+        
+        // Try to close the window
+        try {
+          window.close();
+        } catch (e) {
+          console.log("Could not automatically close the window:", e);
+        }
+        
+        // Display a message if the window didn't close
+        document.body.innerHTML = `
+          <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+            <h2>Payment Completed Successfully</h2>
+            <p>Transaction ID: ${token}</p>
+            <p>You can now close this window and return to the application.</p>
+            <button style="padding: 10px 15px; background-color: #0070ba; color: white; border: none; border-radius: 4px; cursor: pointer;" 
+              onclick="window.location.href='/'">Return to Home</button>
+          </div>
+        `;
+      }
     }
   }
 };
