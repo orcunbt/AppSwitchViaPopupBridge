@@ -58,7 +58,8 @@ window.onload = function() {
     }).then(function (paypalCheckoutInstance) {
       return paypalCheckoutInstance.loadPayPalSDK({
       currency: 'USD',  // Must match the currency passed in with createPayment
-      intent: 'capture' // Must match the intent passed in with createPayment
+      intent: 'capture', // Must match the intent passed in with createPayment
+        commit: false
       });
     }).then(function (paypalCheckoutInstance) {
       return paypal.Buttons({
