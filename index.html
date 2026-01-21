@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="style.css">
-  <script src="https://js.braintreegateway.com/web/3.128.0/js/paypal-checkout.js"></script>
+  <script src="https://js.braintreegateway.com/web/3.134.0/js/paypal-checkout.js"></script>
 </head>
 
 <body>
@@ -57,9 +57,9 @@ window.onload = function() {
       authorization: 'sandbox_9cn37sjt_wwdyzynjc54qxywk'
     }).then(function (paypalCheckoutInstance) {
       return paypalCheckoutInstance.loadPayPalSDK({
-      currency: 'USD',  // Must match the currency passed in with createPayment
+      currency: 'EUR',  // Must match the currency passed in with createPayment
       intent: 'capture', // Must match the intent passed in with createPayment
-        commit: false
+        commit: true
       });
     }).then(function (paypalCheckoutInstance) {
       return paypal.Buttons({
@@ -69,7 +69,7 @@ window.onload = function() {
           return paypalCheckoutInstance.createPayment({
             flow: 'checkout', // Required
             amount: 10.00, // Required
-            currency: 'USD', // Required, must match the currency passed in with loadPayPalSDK
+            currency: 'EUR', // Required, must match the currency passed in with loadPayPalSDK
 userAction: 'CONTINUE',
             intent: 'capture', // Must match the intent passed in with loadPayPalSDK
             returnUrl: 'https://orcunbt.github.io/AppSwitchViaPopupBridge/index.html',
