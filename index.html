@@ -54,7 +54,8 @@ window.onload = function() {
     var log = document.querySelector('#log');
 
     braintree.paypalCheckout.create({
-      authorization: 'sandbox_9cn37sjt_wwdyzynjc54qxywk'
+      authorization: 'sandbox_9cn37sjt_wwdyzynjc54qxywk',
+      merchantAccountId: 'eurmerchant'
     }).then(function (paypalCheckoutInstance) {
       return paypalCheckoutInstance.loadPayPalSDK({
       currency: 'EUR',  // Must match the currency passed in with createPayment
